@@ -156,4 +156,20 @@ int main()
 	}
 
 
+	// Szukanie najdluzszego slowa
+
+	std::vector<std::string> words = { "C++", "Lambda", "Programming", "Vector", "Loop" };
+
+	std::string longest = "";
+
+	for (const auto& word : words) 
+	{
+		if (word.length() > longest.length()) 
+		{
+			longest = word;
+		}
+	}
+
+	std::cout << longest << '\n';
+
 }
