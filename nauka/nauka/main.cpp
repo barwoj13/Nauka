@@ -1,5 +1,7 @@
 #include <iostream>
 #include <functional>
+#include <vector>
+#include <string>
 
 // Lambda
 
@@ -25,7 +27,7 @@ int main()
 {
 
 	// Lambda
-
+	/*
 	int x = 67;
 
 	auto przekazanie1 = [x]() // Capture clause - pozwoli nam na przekazanie do lambdy jakiejœ zmiennej
@@ -58,4 +60,52 @@ int main()
 
 	przekazanie1();
 	przekazanie2();
+
+	auto testowa = []()
+		{
+			std::cout << "Test" << std::endl;
+		};
+	testowa();
+
+	auto testowa2 = [id = 0]() mutable
+		{
+			return id++;
+		};
+
+	std::cout << testowa2() << std::endl;
+	std::cout << testowa2() << std::endl;
+	*/
+	
+	// Vectory
+
+	std::vector<int> numbers;
+
+	numbers.push_back(10);
+	numbers.push_back(20);
+	numbers.push_back(30);
+
+	for (int i = 0; i < numbers.size(); i++) 
+	{
+		std::cout << numbers[i] << std::endl;
+	}
+
+	std::vector<std::string> names = {"Bartek", "Marcel", "Sylwek", "Alan"};
+
+	std::cout << "--- Petla indeksowana ---\n";
+	for (size_t i = 0; i < names.size(); i++) {
+		std::cout << names[i] << "\n";
+	}
+
+	std::cout << "--- Petla for-each ---\n";
+
+	// for(auto name : names) // Operujemy na kopii elementu z vectora
+	for (auto& name : names) // Operujemy na orginalnym elemencie
+	{
+		std::cout << name << "\n";
+		name += "!";
+	}
+	// for(const auto& name : names) // Operujemy na sta³ej referencji i nie mamy mo¿liwoœci zmiany wartoœci, jest to najoptymalniejsze
+
+
+
 }
