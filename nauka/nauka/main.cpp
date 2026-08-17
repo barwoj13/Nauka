@@ -107,5 +107,53 @@ int main()
 	// for(const auto& name : names) // Operujemy na sta³ej referencji i nie mamy mo¿liwoœci zmiany wartoœci, jest to najoptymalniejsze
 
 
+	std::cout << numbers.front() << '\n'; // ---> Pierwszy element
+	std::cout << numbers.back() << '\n'; // ---> Ostatni element
+
+	// System oceniania z vectorami
+
+	std::vector<int> grades = { 2,5,1,4,3,2,5,1,4 };
+
+	// Poprawa 1 na 2 
+	for (auto& grade : grades) 
+	{
+		if (grade == 1) 
+		{
+			grade = 2;
+		}
+	}
+
+	double srednia = 0.0f;
+	for (const auto& grade : grades) 
+	{
+		srednia += grade;
+	}
+	srednia /= grades.size();
+
+
+
+
+	// Transformacja cen
+
+	std::vector<double> netPrices = { 100.0, 50.0, 200.0, 15.0 };
+
+	auto applyVAT = [](double cena)
+		{
+			return cena += cena * 0.23f;
+		};
+
+	std::vector<double> grossPrices;
+
+	for (const auto& netPrice : netPrices) 
+	{
+		grossPrices.push_back(applyVAT(netPrice));
+	}
+
+	std::cout << "Ceny brutto" << std::endl;
+	for (const auto& price : grossPrices) 
+	{
+		std::cout << price << "PLN\n";
+	}
+
 
 }
