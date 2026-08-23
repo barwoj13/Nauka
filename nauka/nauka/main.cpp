@@ -1,44 +1,70 @@
 #include <iostream>
 #include <string>
 
-
-class Pojazd
+class Pracownik
 {
-private:
-	std::string marka;
-
 protected:
-	int rokProdukcji;
+    std::string imie;
 
 public:
-	Pojazd(const std::string& marka, int rokProdukcji) 
-		:marka(marka), rokProdukcji(rokProdukcji) {}
+    Pracownik(const std::string& imie) : imie(imie) {}
 
-	std::string getMarka() const { return marka; }
+    // Wirtualny destruktor – gwarantuje wywo³anie w³aœciwego destruktora przy delete
+    virtual ~Pracownik() = default;
 
-	void wyswietlInfo() const 
-	{
-		std::cout << marka << " : " << rokProdukcji << std::endl;
-	}
+    // Czysto wirtualna metoda (= 0) – klasa staje siê abstrakcyjna
+    virtual double obliczPensje() = 0;
 };
 
-class Samochod : public Pojazd
+class PracownikEstatowy : public Pracownik
 {
 private:
-	int liczbaDrzwi;
+    double pensjaPodstawowa;
+
 public:
-	Samochod(const std::string& marka, int rokProdukcji, int liczbaDrzwi)
-		:Pojazd(marka, rokProdukcji), liczbaDrzwi(liczbaDrzwi) {}
+    PracownikEstatowy(const std::string& imie, double pensjaPodstawowa)
+        : Pracownik(imie), pensjaPodstawowa(pensjaPodstawowa) {
+    }
 
-	void wyswietlSzczegol() const 
-	{
-		std::cout << getMarka() << " : " << rokProdukcji << " : " << liczbaDrzwi << std::endl;
-	}
-
+    double obliczPensje() override
+    {
+        return pensjaPodstawowa;
+    }
 };
 
+class PracownikGodzinowy : public Pracownik
+{
+private:
+    double stawkaGodzinowa;
+    int liczbaGodzin;
+
+public:
+    PracownikGodzinowy(const std::string& imie, double stawkaGodzinowa, int liczbaGodzin)
+        : Pracownik(imie), stawkaGodzinowa(stawkaGodzinowa), liczbaGodzin(liczbaGodzin) {
+    }
+
+    double obliczPensje() override
+    {
+        return stawkaGodzinowa * liczbaGodzin;
+    }
+};
 
 int main()
 {
+    // Poprawne polimorficzne zarzadzanie pamiecia
+    Pracownik* tablica[] = {
+        new PracownikEstatowy("Jan", 4500.0),
+        new PracownikGodzinowy("Chrzan", 30.0, 160)
+    };
 
+    for (int i = 0; i < 2; i++)
+    {
+        std::cout << tablica[i]->obliczPensje() << std::endl;
+    }
+
+    // Sprz¹tanie pamiêci – tutaj kluczowy jest wirtualny destruktor!
+    for (int i = 0; i < 2; i++)
+    {
+        delete tablica[i];
+    }
 }
