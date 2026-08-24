@@ -2,23 +2,45 @@
 #include <string>
 #include <cassert>
 
-size_t myStrLen(const char* str) 
+int* filterEven(const int* arr, int size, int& newSize)
 {
-	size_t rozmiar = 0;
-	
-	while (*str != '\0')
+	int parzyste = 0;
+	for (int i = 0; i < size; i++) 
 	{
-		str++;
-		rozmiar++;
+		if (arr[i] % 2 == 0) parzyste++;
 	}
 
-	return rozmiar;
+	//std::cout << parzyste;
 
+	int* T = new int[parzyste] {};
 
+	int bufor = 0;
+
+	for (int i = 0; i < size; i++) 
+	{
+		if (arr[i] % 2 == 0) 
+		{
+			T[bufor] = arr[i];
+			bufor++;
+		}
+	}
+	newSize = parzyste;
+	return T;
 }
 
 int main()
 {
-	const char* tekst = "";
-	std::cout << myStrLen(tekst);
+	int size = 4;
+	int newSize = 0;
+	
+	int* arr = new int[size] {2, 2, 1, 4};
+
+	int* test = filterEven(arr, size, newSize);
+
+	for (int i = 0; i < newSize; i++) 
+	{
+		std::cout << test[i] << " ";
+	}
+	delete[] arr;
+	delete[] test;
 }
