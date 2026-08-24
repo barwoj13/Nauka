@@ -2,28 +2,29 @@
 #include <string>
 #include <cassert>
 
-
-void swapByRef(int& a, int&b)
+void reverseArray(int* start, int* end)
 {
-	int bufor = a;
-	a = b;
-	b = bufor;
-}
+	if (start == nullptr || end == nullptr) return;
 
-void findMinMax(const int arr[], int size, int& outMin, int& outMax)
-{
-	outMax = arr[0];
-	outMin = arr[0];
-	for (int i = 0; i < size; i++)
+	while(start < end) // Bezpieczniejsze ni¿ start != end bo gdyby by³a to tablica parzysta to wskaŸniki by siê wyminê³y
 	{
-		if (arr[i] > outMax) { outMax = arr[i]; }
-		if (arr[i] < outMin) { outMin = arr[i]; }
+		int bufor = *start;
+		*start = *end;
+		*end = bufor;
+		start++;
+		end--;
 	}
 }
 
-
 int main()
 {
+	int tab[] = { 1, 2, 3, 4 };
+	int size = 4;
 
+	reverseArray(tab, tab + size - 1);
 
+	for(int i = 0; i < size; i++)
+	{
+		std::cout << tab[i] << " ";
+	}
 }
