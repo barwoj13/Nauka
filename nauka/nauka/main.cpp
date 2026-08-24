@@ -2,29 +2,23 @@
 #include <string>
 #include <cassert>
 
-void reverseArray(int* start, int* end)
+size_t myStrLen(const char* str) 
 {
-	if (start == nullptr || end == nullptr) return;
-
-	while(start < end) // Bezpieczniejsze ni¿ start != end bo gdyby by³a to tablica parzysta to wskaŸniki by siê wyminê³y
+	size_t rozmiar = 0;
+	
+	while (*str != '\0')
 	{
-		int bufor = *start;
-		*start = *end;
-		*end = bufor;
-		start++;
-		end--;
+		str++;
+		rozmiar++;
 	}
+
+	return rozmiar;
+
+
 }
 
 int main()
 {
-	int tab[] = { 1, 2, 3, 4 };
-	int size = 4;
-
-	reverseArray(tab, tab + size - 1);
-
-	for(int i = 0; i < size; i++)
-	{
-		std::cout << tab[i] << " ";
-	}
+	const char* tekst = "";
+	std::cout << myStrLen(tekst);
 }
