@@ -10,28 +10,20 @@ void swapByRef(int& a, int&b)
 	b = bufor;
 }
 
-void swapByPtr(int* a, int* b)
+void findMinMax(const int arr[], int size, int& outMin, int& outMax)
 {
-	if (a == nullptr || b == nullptr) return;
-	int bufor = *a;
-	*a = *b;
-	*b = bufor;
+	outMax = arr[0];
+	outMin = arr[0];
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] > outMax) { outMax = arr[i]; }
+		if (arr[i] < outMin) { outMin = arr[i]; }
+	}
 }
+
 
 int main()
 {
-	int a = 3;
-	int b = 8;
-
-	std::cout << "a: " << a << ", b: " << b << std::endl;
-
-	swapByRef(a, b);
-
-	std::cout << "a: " << a << ", b: " << b << std::endl;
-
-	swapByPtr(&a, &b);
-
-	std::cout << "a: " << a << ", b: " << b << std::endl;
 
 
 }
