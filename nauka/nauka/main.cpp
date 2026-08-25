@@ -1,26 +1,47 @@
 #include <iostream>
-#include <cmath>
+#include <string>
 
-
-struct Point2D 
+class BankAccount
 {
-	double x;
-	double y;
+private:
+	std::string accountNumber;
+	std::string ownerName;
+	double balance;
+
+public:
+	BankAccount(std::string& accountNumber, std::string& ownerName, double balance = 0.0)
+		: accountNumber(accountNumber), ownerName(ownerName), balance(balance) {
+	}
+
+	void deposit(double amount)
+	{
+		if (amount <= 0.0) return;
+		balance += amount;
+	}
+
+	bool withdraw(double amount)
+	{
+		if (amount <= 0.0) return false;
+		if (amount > balance) return false;
+		balance -= amount;
+		return true;
+	}
+
+	double getBalance() const 
+	{
+		return balance;
+	}
+
+	void printInfo() const
+	{
+		std::cout << accountNumber << " " << ownerName << " " << balance << std::endl;
+	}
+
+
 };
 
-double distance(const Point2D& p1, const Point2D& p2)
-{
-	double wynik = sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
-	return wynik;
-}
-
-void movePoint(Point2D& p, double dx, double dy) 
-{
-	p.x += dx;
-	p.y += dy;
-}
 
 int main() 
 {
-	//a
+
 }
