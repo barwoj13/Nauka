@@ -1,46 +1,19 @@
 #include <iostream>
-#include <string>
-#include <cassert>
 
-int* filterEven(const int* arr, int size, int& newSize)
-{
-	int parzyste = 0;
-	for (int i = 0; i < size; i++) 
-	{
-		if (arr[i] % 2 == 0) parzyste++;
-	}
-
-	//std::cout << parzyste;
-
-	int* T = new int[parzyste] {};
-
-	int bufor = 0;
-
-	for (int i = 0; i < size; i++) 
-	{
-		if (arr[i] % 2 == 0) 
-		{
-			T[bufor] = arr[i];
-			bufor++;
-		}
-	}
-	newSize = parzyste;
-	return T;
+int& getLocalVariable() { // to jest b³êdne poniewa¿ x nie istnieje poza funkcj¹ wiêc nie mo¿emy odwo³ywaæ siê do niego przez referencje
+    int x = 10; 
+    return x; // wisz¹ca referencja
 }
 
-int main()
-{
-	int size = 4;
-	int newSize = 0;
-	
-	int* arr = new int[size] {2, 2, 1, 4};
+void processValue(int* ptr) { 
+    *ptr += 6;
+}
 
-	int* test = filterEven(arr, size, newSize);
+int main() {
+    int& ref = getLocalVariable();
+    std::cout << ref << std::endl;
 
-	for (int i = 0; i < newSize; i++) 
-	{
-		std::cout << test[i] << " ";
-	}
-	delete[] arr;
-	delete[] test;
+    int* p = nullptr;
+    processValue(p); // ta funkcja podniesie wartoœæ po derefencji tego wskaŸnika, ale wyskoczy error poniewa¿ wartoœæ nie zosta³a wczeœniej zainicjalizowana
+    return 0;
 }
