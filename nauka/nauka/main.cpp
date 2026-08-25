@@ -1,19 +1,26 @@
 #include <iostream>
+#include <cmath>
 
-int& getLocalVariable() { // to jest b³êdne poniewa¿ x nie istnieje poza funkcj¹ wiêc nie mo¿emy odwo³ywaæ siê do niego przez referencje
-    int x = 10; 
-    return x; // wisz¹ca referencja
+
+struct Point2D 
+{
+	double x;
+	double y;
+};
+
+double distance(const Point2D& p1, const Point2D& p2)
+{
+	double wynik = sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
+	return wynik;
 }
 
-void processValue(int* ptr) { 
-    *ptr += 6;
+void movePoint(Point2D& p, double dx, double dy) 
+{
+	p.x += dx;
+	p.y += dy;
 }
 
-int main() {
-    int& ref = getLocalVariable();
-    std::cout << ref << std::endl;
+int main() 
+{
 
-    int* p = nullptr;
-    processValue(p); // ta funkcja podniesie wartoœæ po derefencji tego wskaŸnika, ale wyskoczy error poniewa¿ wartoœæ nie zosta³a wczeœniej zainicjalizowana
-    return 0;
 }
