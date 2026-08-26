@@ -1,47 +1,94 @@
 #include <iostream>
 #include <string>
 
-class BankAccount
+class intStack
 {
 private:
-	std::string accountNumber;
-	std::string ownerName;
-	double balance;
+	int* data;
+	size_t capacity;
+	int topIndex; // ustawiamy na -1 gdy stos jest pusty
 
 public:
-	BankAccount(std::string& accountNumber, std::string& ownerName, double balance = 0.0)
-		: accountNumber(accountNumber), ownerName(ownerName), balance(balance) {
-	}
-
-	void deposit(double amount)
+	intStack(size_t cap = 10)
+		: capacity(cap), topIndex(-1)
 	{
-		if (amount <= 0.0) return;
-		balance += amount;
+		data = new int[cap] {};
 	}
 
-	bool withdraw(double amount)
+	~intStack() 
 	{
-		if (amount <= 0.0) return false;
-		if (amount > balance) return false;
-		balance -= amount;
-		return true;
+		delete[] data;
 	}
 
-	double getBalance() const 
+	intStack(const intStack& other) 
 	{
-		return balance;
+		capacity = other.capacity;
+		topIndex = other.topIndex;
+		data = new int[capacity];
+
+		for (int i = 0; i < capacity; i++) 
+		{
+			data[i] = other.data[i];
+		}
 	}
 
-	void printInfo() const
+	intStack& operator=(const intStack& other)
 	{
-		std::cout << accountNumber << " " << ownerName << " " << balance << std::endl;
+		if (this == &other) return *this;
+		delete[] data;
+
+		capacity = other.capacity;
+		topIndex = other.topIndex;
+		data = new int[capacity];
+
+		for (int i = 0; i < capacity; i++)
+		{
+			data[i] = other.data[i];
+		}
+
+		return *this;
 	}
 
+	void push(int val) 
+	{
+		if (topIndex + 1 >= capacity) return;
 
+		topIndex++;
+		data[topIndex] = val;
+	}
+
+	void pop() 
+	{
+		if (topIndex == -1) return;
+		topIndex--;
+	}
+
+	int top() const 
+	{
+		return data[topIndex];
+	}
+
+	bool isEmpty() const 
+	{
+		return topIndex == -1;
+	}
 };
 
-
-int main() 
+int main()
 {
+	intStack s1(5);
+	s1.push(10);
+	s1.push(20);
+	s1.push(30);
 
+	// Test konstruktora kopiuj¹cego
+	intStack s2 = s1;
+
+	std::cout << "Top s1: " << s1.top() << std::endl; // 30
+	std::cout << "Top s2: " << s2.top() << std::endl; // 30
+
+	s1.pop();
+	std::cout << "Po pop() na s1:" << std::endl;
+	std::cout << "Top s1: " << s1.top() << std::endl; // 20
+	std::cout << "Top s2: " << s2.top() << std::endl; // 30 (s2 ma w³asn¹ kopiê pamiêci!)
 }
