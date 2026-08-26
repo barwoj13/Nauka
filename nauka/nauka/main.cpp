@@ -1,94 +1,68 @@
 #include <iostream>
-#include <string>
+#include <vector>
 
-class intStack
+class Shape 
 {
 private:
-	int* data;
-	size_t capacity;
-	int topIndex; // ustawiamy na -1 gdy stos jest pusty
-
 public:
-	intStack(size_t cap = 10)
-		: capacity(cap), topIndex(-1)
-	{
-		data = new int[cap] {};
-	}
-
-	~intStack() 
-	{
-		delete[] data;
-	}
-
-	intStack(const intStack& other) 
-	{
-		capacity = other.capacity;
-		topIndex = other.topIndex;
-		data = new int[capacity];
-
-		for (int i = 0; i < capacity; i++) 
-		{
-			data[i] = other.data[i];
-		}
-	}
-
-	intStack& operator=(const intStack& other)
-	{
-		if (this == &other) return *this;
-		delete[] data;
-
-		capacity = other.capacity;
-		topIndex = other.topIndex;
-		data = new int[capacity];
-
-		for (int i = 0; i < capacity; i++)
-		{
-			data[i] = other.data[i];
-		}
-
-		return *this;
-	}
-
-	void push(int val) 
-	{
-		if (topIndex + 1 >= capacity) return;
-
-		topIndex++;
-		data[topIndex] = val;
-	}
-
-	void pop() 
-	{
-		if (topIndex == -1) return;
-		topIndex--;
-	}
-
-	int top() const 
-	{
-		return data[topIndex];
-	}
-
-	bool isEmpty() const 
-	{
-		return topIndex == -1;
-	}
+	virtual double area() const = 0;
+	virtual ~Shape() = default;
 };
 
-int main()
+class Circle : public Shape 
 {
-	intStack s1(5);
-	s1.push(10);
-	s1.push(20);
-	s1.push(30);
+private:
+	double m_radius;
+public:
+	Circle(double r) : m_radius(r) {}
 
-	// Test konstruktora kopiuj¹cego
-	intStack s2 = s1;
+	void setRadius(double radius) 
+	{
+		if (radius <= 0) return;
+		m_radius = radius;
+	}
 
-	std::cout << "Top s1: " << s1.top() << std::endl; // 30
-	std::cout << "Top s2: " << s2.top() << std::endl; // 30
+	double area() const override { return  3.14 * m_radius * m_radius; }
+};
 
-	s1.pop();
-	std::cout << "Po pop() na s1:" << std::endl;
-	std::cout << "Top s1: " << s1.top() << std::endl; // 20
-	std::cout << "Top s2: " << s2.top() << std::endl; // 30 (s2 ma w³asn¹ kopiê pamiêci!)
+class Rectangle : public Shape 
+{
+private:
+	double m_width;
+	double m_height;
+public:
+	Rectangle(double w, double h) : m_width(w), m_height(h) {}
+
+	void setParam(double width, double height) 
+	{
+		if (width <= 0 || height <= 0) return;
+		m_width = width;
+		m_height = height;
+	}
+
+	double area() const override {	return m_width * m_height; }
+
+};
+
+int main() {
+	// Wejœcie: wektor wskaŸników na klasê bazow¹
+	std::vector<Shape*> shapes;
+
+	shapes.push_back(new Circle(3.0));
+	shapes.push_back(new Rectangle(4.0, 5.0));
+	shapes.push_back(new Circle(1.5));
+
+	double totalArea = 0.0;
+
+	// Polimorficzna pêtla - wywo³uje w³aœciw¹ metodê area() w zale¿noœci od rzeczywistego typu obiektu
+	for (const Shape* shape : shapes) {
+		totalArea += shape->area();
+	}
+
+	std::cout << "Laczne pole powierzchni: " << totalArea << std::endl;
+
+	// Pamiêtaj o zwolnieniu pamiêci (wywo³a wirtualne destruktory!)
+	for (Shape* shape : shapes) {
+		delete shape;
+	}
 }
